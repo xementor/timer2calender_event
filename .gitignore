@@ -1,6 +1,6 @@
 .env
 learn
-api/__pycache__
+api_f/__pycache__
 .todo
 build
 dist
@@ -8,4 +8,4 @@ src/__pycache__
 .todo
 credentials.json
 token.json
-api
+api_f
