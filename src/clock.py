@@ -178,14 +178,13 @@ class Window(QWidget):
             # Send a POST request with the event data
             try:
                 requests.get("http://www.google.com")
-                calender_api(event)
-                self.removeEvent(event)
+                res = calender_api(event)
+                if res is not None and res == "confirmed":
+                    self.removeEvent(event)
                 print('data is backed up')
             except requests.ConnectionError:
                 print('Data is not backed up')
-            except Exception as e:
-                print(f'Error processing event: {event}')
-                print(str(e))
+                return
 		
 
     def resume_time(self):
