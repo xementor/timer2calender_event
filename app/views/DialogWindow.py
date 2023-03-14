@@ -1,9 +1,6 @@
-from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QLineEdit, QLabel, QVBoxLayout, QDialog
-from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtWidgets import  QPushButton, QLineEdit,  QVBoxLayout, QDialog
 
-class Dialog(QDialog):
-    # This signal will be emitted when the user enters data in the text field
-
+class DialogWindow(QDialog):
 
     def __init__(self, parent):
         super().__init__()

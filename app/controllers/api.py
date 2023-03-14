@@ -3,6 +3,10 @@ from __future__ import print_function
 import datetime
 import os.path
 
+from dotenv import load_dotenv
+import os
+
+
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
@@ -13,26 +17,42 @@ from googleapiclient.errors import HttpError
 SCOPES = ['https://www.googleapis.com/auth/calendar']
 
 
+
+load_dotenv()
+
+client_id = os.environ.get('client_id')
+client_secret = os.environ.get('client_secret')
+
+# Load client configuration from JSON file
+client_config = {
+	"installed": {
+		"client_id": client_id,
+		"client_secret": client_secret,
+		"project_id": "ihzonaid",
+		"auth_uri": "https://accounts.google.com/o/oauth2/auth",
+		"token_uri": "https://oauth2.googleapis.com/token",
+		"auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+		"redirect_uris": ["http://localhost"]
+	}
+}
+
+
+token_location = "resource/token.json"
+
 def calender_api(event):
-    """Shows basic usage of the Google Calendar API.
-    Prints the start and name of the next 10 events on the user's calendar.
-    """
     creds = None
-    # The file token.json stores the user's access and refresh tokens, and is
-    # created automatically when the authorization flow completes for the first
-    # time.
-    if os.path.exists('token.json'):
-        creds = Credentials.from_authorized_user_file('token.json', SCOPES)
+    if os.path.exists():
+        creds = Credentials.from_authorized_user_file(token_location, SCOPES)
     # If there are no (valid) credentials available, let the user log in.
     if not creds or not creds.valid:
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
         else:
-            flow = InstalledAppFlow.from_client_secrets_file(
-                'credentials.json', SCOPES)
+            flow = InstalledAppFlow.from_client_config(
+                client_config, SCOPES)
             creds = flow.run_local_server(port=0)
         # Save the credentials for the next run
-        with open('token.json', 'w') as token:
+        with open(token_location, 'w') as token:
             token.write(creds.to_json())
 
     try:
