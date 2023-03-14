@@ -100,7 +100,7 @@ class Window(QWidget):
         
         if delta > timedelta(minutes=10):
             self.open_dialog_window()
-            event = Event(start, end_time, self.title)
+            event = Event(self.title, start, end_time)
             self.event_controller.save_event_to_json(event)
             self.event_controller.backup_events()
 

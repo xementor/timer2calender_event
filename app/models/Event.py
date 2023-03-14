@@ -1,6 +1,6 @@
 class Event:
     def __init__(self, title, start_time, end_time):
-        self.title = title
+        self.title: str = title
         self.start_time = start_time
         self.end_time = end_time
 

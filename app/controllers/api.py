@@ -13,15 +13,22 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
+from app.models.Event import Event
+
 # If modifying these scopes, delete the file token.json.
 SCOPES = ['https://www.googleapis.com/auth/calendar']
 
 
 
-load_dotenv('.evn2')
+load_dotenv('.env2')
 
 client_id = os.environ.get('client_id')
 client_secret = os.environ.get('client_secret')
+print(client_id, client_secret)
+
+if (client_id or client_secret) is None:
+    raise ValueError('Env is not correctly setted')
+    
 
 # Load client configuration from JSON file
 client_config = {
@@ -41,7 +48,7 @@ token_location = "resource/token.json"
 
 def calender_api(event):
     creds = None
-    if os.path.exists():
+    if os.path.exists(token_location):
         creds = Credentials.from_authorized_user_file(token_location, SCOPES)
     # If there are no (valid) credentials available, let the user log in.
     if not creds or not creds.valid:
@@ -64,5 +71,6 @@ def calender_api(event):
         return cratedEvent.get('status')
 
     except HttpError as error:
+        if error.status_code == 400:
+            print("Bad request")
         print('An error occurred: %s' % error)
-

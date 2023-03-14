@@ -5,3 +5,4 @@ def format_duration(seconds):
       # Format the time string
       time_str = f"{hours:02}:{minutes:02}:{seconds:02}"
       return time_str
+
