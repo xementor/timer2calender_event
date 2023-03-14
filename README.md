@@ -1,6 +1,8 @@
 # Timer 2 Calender
 Timer Tracker with Google Calendar Integration
 
+
+
 ## Description
 This is a Python desktop application built using PyQt5 to track time and events, and sync them with your Google Calendar. The application includes a timer that you can start and stop, and it automatically creates an event in your Google Calendar with the duration of the timer.
 

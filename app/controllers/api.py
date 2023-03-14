@@ -18,7 +18,7 @@ SCOPES = ['https://www.googleapis.com/auth/calendar']
 
 
 
-load_dotenv()
+load_dotenv('.evn2')
 
 client_id = os.environ.get('client_id')
 client_secret = os.environ.get('client_secret')
