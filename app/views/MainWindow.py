@@ -98,7 +98,7 @@ class Window(QWidget):
         start = self.start_time.isoformat() + 'Z'
         end_time = future.isoformat() + 'Z'
         
-        if delta < timedelta(minutes=10):
+        if delta > timedelta(minutes=10):
             self.open_dialog_window()
             event = Event(start, end_time, self.title)
             self.event_controller.save_event_to_json(event)

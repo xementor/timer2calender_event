@@ -27,6 +27,8 @@ class EventController:
         return events
 
     def save_event_to_json(self, event: Event):
+        if (event.title):
+            return
         with open(self.db_location, "a") as f:
             json.dump(event.get_event_api_format(), f)
             f.write("\n")
