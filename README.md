@@ -1,4 +1,4 @@
-# Project Name
+# Timer 2 Calender
 Timer Tracker with Google Calendar Integration
 
 ## Description
