@@ -94,13 +94,11 @@ class Window(QWidget):
         if self.clock_running:
             return
         delta = timedelta(seconds=self.second)
-        future = self.start_time + delta
-        start = self.start_time.isoformat() + 'Z'
-        end_time = future.isoformat() + 'Z'
+        end_time = self.start_time + delta
         
-        if delta > timedelta(minutes=10):
+        if delta < timedelta(minutes=10):
             self.open_dialog_window()
-            event = Event(self.title, start, end_time)
+            event = Event(self.title, self.start_time, end_time)
             self.event_controller.save_event_to_json(event)
             self.event_controller.backup_events()
 

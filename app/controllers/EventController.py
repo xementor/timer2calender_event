@@ -1,3 +1,4 @@
+from ast import List
 import json
 import os
 import datetime
@@ -9,29 +10,50 @@ from app.models.Event import Event
 
 class EventController:
     def __init__(self):
-        self.events = []
         self.db_location = "resource/events.json"
+        self.events = self.get_events_from_db()
+    
+    def __init__(self, db_location):
+        self.db_location = db_location
+        self.events = self.get_events_from_db()
 
     def remove_event(self, event):
+        print(event)
         self.events.remove(event)
+        with open(self.db_location, "w") as f:
+            json.dump([e for e in self.events], f, indent=4)
 
-    def get_events_from_db(self):
+    def get_events_from_db(self) -> list:
+        events = []
         if not os.path.exists(self.db_location):
-            return []
+            return events
 
-        with open(self.db_location, "r") as f:
+        try:
+            with open(self.db_location, "r") as f:
+                events = json.load(f)
+                return events
+        except json.decoder.JSONDecodeError:
             events = []
-            for line in f:
-                event = json.loads(line)
-                events.append(event)
-        return events
+            return events
+        
+    
 
     def save_event_to_json(self, event: Event):
         if not bool(event.title):
             return
-        with open(self.db_location, "a") as f:
-            json.dump(event.get_event_api_format(), f)
-            f.write("\n")
+        try:
+            with open(self.db_location, "r+") as f:
+                data = json.load(f)
+        except FileNotFoundError:
+            # create new file with list containing the new event object
+            data = [event.get_event_api_format()]
+            with open(self.db_location, "w") as f:
+                json.dump(data, f, indent=4)
+        else:
+            # file exists and is not empty, append new event object to list
+            data.append(event.get_event_api_format())
+            with open(self.db_location, "w") as f:
+                json.dump(data, f, indent=4)
 
     def backup_events(self):
         events = self.get_events_from_db()
